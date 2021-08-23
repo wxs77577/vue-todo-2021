@@ -4,14 +4,19 @@
     <h1 class="ToDo-Header">Vue To Do</h1>
     <div class="ToDo-Container">
       <div class="ToDo-Content">
-        <ToDoItem v-for="item in list" :item="item" @delete="onDeleteItem" :key="item.id" />
+        <ToDoItem
+          v-for="(item, i) in list"
+          :item="item"
+          @delete="list.splice(i, 1)"
+          :key="item.id"
+        />
       </div>
       <div class="ToDoInput">
         <input
           type="text"
           placeholder="I need to..."
           v-model="todo"
-          v-on:keyup.enter="createNewToDoItem"
+          @keyup.enter="createNewToDoItem"
         />
         <button class="ToDo-Add" @click="createNewToDoItem">+</button>
       </div>
@@ -30,12 +35,12 @@ import Logo from "../assets/logo.png";
 export default {
   name: "ToDo",
   components: {
-    ToDoItem
+    ToDoItem,
   },
   setup() {
     const list = ref([
       { id: 1, text: "clean the house" },
-      { id: 2, text: "buy milk" }
+      { id: 2, text: "buy milk" },
     ]);
     const todo = ref("");
     const logo = Logo;
@@ -43,7 +48,7 @@ export default {
 
     function generateId() {
       if (list.value && list.value.length) {
-        return Math.max(...list.value.map(t => t.id)) + 1;
+        return Math.max(...list.value.map((t) => t.id)) + 1;
       } else {
         return 1;
       }
@@ -61,10 +66,6 @@ export default {
       todo.value = "";
     }
 
-    function onDeleteItem(id) {
-      list.value = list.value.filter(item => item.id !== id);
-    }
-
     function displayError() {
       showError.value = true;
       const clearTimer = setTimeout(() => (showError.value = false), 3000);
@@ -78,10 +79,9 @@ export default {
       showError,
       generateId,
       createNewToDoItem,
-      onDeleteItem,
-      displayError
+      displayError,
     };
-  }
+  },
 };
 </script>
 

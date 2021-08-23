@@ -1,7 +1,7 @@
 <template>
   <div class="ToDoItem">
     <p class="ToDoItem-Text">{{item.text}}</p>
-    <button class="ToDoItem-Delete" @click="deleteItem(item.id)">-</button>
+    <button class="ToDoItem-Delete" @click="$emit('delete')">-</button>
   </div>
 </template>
 
@@ -9,14 +9,6 @@
 export default {
   name: "ToDoItem",
   props: ["item"],
-  setup(props, { emit }) {
-    function deleteItem(id) {
-      emit("delete", id);
-    }
-    return {
-      deleteItem
-    };
-  }
 };
 </script>
 
